@@ -3,9 +3,11 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
-    id("java")
-    id("java-library")
-    id("maven-publish")
+    java
+    `java-library`
+    `maven-publish`
+    signing
+    id("io.github.gradle-nexus.publish-plugin")
     id("com.github.johnrengelman.shadow")
     id("com.github.hierynomus.license")
     id("org.owasp.dependencycheck")
@@ -13,10 +15,6 @@ plugins {
     id("com.github.sgtsilvio.gradle.metadata")
     id("com.github.sgtsilvio.gradle.javadoc-links")
     id("com.github.ben-manes.versions")
-
-    /* Publishing Plugins */
-    id("io.github.gradle-nexus.publish-plugin")
-    id("signing")
 
     /* Code Quality Plugins */
     id("jacoco")
@@ -41,29 +39,24 @@ metadata {
         apache2()
     }
     developers {
-        developer {
-            id.set("cschaebe")
-            name.set("Christoph Schaebel")
+        register("cschaebe") {
+            fullName.set("Christoph Schaebel")
             email.set("christoph.schaebel@hivemq.com")
         }
-        developer {
-            id.set("lbrandl")
-            name.set("Lukas Brandl")
+        register("lbrandl") {
+            fullName.set("Lukas Brandl")
             email.set("lukas.brandl@hivemq.com")
         }
-        developer {
-            id.set("flimpoeck")
-            name.set("Florian Limpoeck")
+        register("flimpoeck") {
+            fullName.set("Florian Limpoeck")
             email.set("florian.limpoeck@hivemq.com")
         }
-        developer {
-            id.set("sauroter")
-            name.set("Georg Held")
+        register("sauroter") {
+            fullName.set("Georg Held")
             email.set("georg.held@hivemq.com")
         }
-        developer {
-            id.set("SgtSilvio")
-            name.set("Silvio Giebl")
+        register("SgtSilvio") {
+            fullName.set("Silvio Giebl")
             email.set("silvio.giebl@hivemq.com")
         }
     }
@@ -213,7 +206,7 @@ tasks.test {
 tasks.jar {
     manifest.attributes(
         "Implementation-Title" to "HiveMQ",
-        "Implementation-Vendor" to metadata.organization!!.name.get(),
+        "Implementation-Vendor" to metadata.organization.get().name.get(),
         "Implementation-Version" to project.version,
         "HiveMQ-Version" to project.version,
         "Main-Class" to "com.hivemq.HiveMQServer"
